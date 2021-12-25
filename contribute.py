@@ -208,7 +208,7 @@ def buildAffineSliceMatrix(input_image, edge_image, grid_size, i, j):
 def buildApplyAffineModelMatrix(input_image, num_output_channels):
     num_pixels = input_image.shape[0] * input_image.shape[1]
     A = None
-    for k in xrange(input_image.shape[2]):
+    for k in range(input_image.shape[2]):
         plane = input_image[:,:,k]
         # logging.info('[INFO]>>> plane:{}\n'.format(np.size(plane) * num_output_channels))
         # logging.info('[INFO]>>> plane.flatten:{}\n'.format(plane.flatten()))
@@ -237,9 +237,9 @@ def buildDerivXMatrix(grid_size):
 
     A = None
 
-    for _ in xrange(0,grid_size[4]):
-        for _ in xrange(0,grid_size[3]):
-            for _ in xrange(0,grid_size[2]):
+    for _ in range(0,grid_size[4]):
+        for _ in range(0,grid_size[3]):
+            for _ in range(0,grid_size[2]):
                 if(A is None):
                     A = d_dx
                 else:
@@ -257,10 +257,10 @@ def buildDerivYMatrix(grid_size):
 
     A = None
 
-    for _ in xrange(0,grid_size[4]):
-        for _ in xrange(0,grid_size[3]):
-            for _ in xrange(0,grid_size[2]):
-                for _ in xrange(0,grid_size[1]):
+    for _ in range(0,grid_size[4]):
+        for _ in range(0,grid_size[3]):
+            for _ in range(0,grid_size[2]):
+                for _ in range(0,grid_size[1]):
                     if(A is None):
                         A = d_dy
                     else:
@@ -275,8 +275,8 @@ def buildDerivZMatrix(grid_size):
 
     A = None
 
-    for _ in xrange(0,grid_size[4]):
-        for _ in xrange(0,grid_size[3]):
+    for _ in range(0,grid_size[4]):
+        for _ in range(0,grid_size[3]):
             if(A is None):
                 A = d_dz
             else:
@@ -303,8 +303,8 @@ def buildSecondDerivZMatrix(grid_size):
     logging.info('[INFO]>>> cube:{}'.format(cube.shape))
     A = None
 
-    for _ in xrange(0,grid_size[4]):
-        for _ in xrange(0,grid_size[3]):
+    for _ in range(0,grid_size[4]):
+        for _ in range(0,grid_size[3]):
             if(A is None):
                 # A = sl.block_diag(cube)
                 A = cube
@@ -343,7 +343,7 @@ def bguSlice(gamma,IF,EIF):
             pts = np.array([bg_coord_xx,bg_coord_yy,bg_coord_zz]).T
             # print(np.max(gamma))
             affine_model[i][j] = my_inter_fun(pts).T
-            print('[INFO]>>> affine_model[{}][{}].shape:{}'.format(i,j,affine_model[i][j].shape))
+            print(('[INFO]>>> affine_model[{}][{}].shape:{}'.format(i,j,affine_model[i][j].shape)))
     ll = np.ones((ih, iw))
     ll_ = np.array([IF[:,:,0],IF[:,:,1],IF[:,:,2],ll])
     input1 = ll_.swapaxes(0,1).swapaxes(1,2)
@@ -351,7 +351,7 @@ def bguSlice(gamma,IF,EIF):
     for i in range(ai):
         new_ = np.array([affine_model[0][i],affine_model[1][i],affine_model[2][i]])
         affine_model2 = new_.swapaxes(0,1).swapaxes(1,2)
-        print('[INFO]>>> affine_model2.shape:{}'.format(affine_model2.shape))
+        print(('[INFO]>>> affine_model2.shape:{}'.format(affine_model2.shape)))
         output = output + (affine_model2 * input1[:,:,i][:,:,None])
     return output	
 
@@ -365,4 +365,4 @@ def getDefaultAffineGridSize(input_image, output_image):
     grid_size = np.rint([input_height / 16, input_width / 16, 8, \
         output_channels, input_channels + 1])
 
-    return map(int,grid_size)
+    return list(map(int,grid_size))
